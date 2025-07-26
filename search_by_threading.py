@@ -2,15 +2,18 @@
 # для пошуку визначених ключових слів з використанням модуля threading
 from threading import Thread
 import os
+import time
 
 def search_in_file(file_path, keywords):
     """Функція для пошуку ключових слів у файлі."""
+    start_time = time.time()
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             content = file.read()
             found_keywords = [k for k in keywords if k in content]
             if found_keywords:
-                print(f"У файлі {file_path} знайдено ключові слова: {', '.join(found_keywords)}")
+                end_time = time.time()
+                print(f"У файлі {file_path} знайдено ключові слова: {', '.join(found_keywords)}. Час виконання: {end_time - start_time:.2f} секунд")
     except Exception as e:
         print(f"Помилка при обробці файлу {file_path}: {e}")
 

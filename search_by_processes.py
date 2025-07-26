@@ -3,12 +3,15 @@
 #   - Розділіть список файлів між різними процесами.
 #   - Кожен процес має обробляти свою частину файлів, шукаючи ключові слова.
 #   - Використайте механізм обміну даними (наприклад, через Queue) для збору та виведення результатів пошуку.
+#   - Код вимірює та виводить час виконання для кожної з версій
 
 from multiprocessing import Process, Queue
 import os   
+import time
 
 def search_in_file(file_list, keywords, queue):
     """Функція для пошуку ключових слів у списку файлів."""
+    start_time = time.time()
     for file_path in file_list:
         try:
             with open(file_path, 'r', encoding='utf-8') as file:
@@ -16,6 +19,8 @@ def search_in_file(file_list, keywords, queue):
                 found_keywords = [k for k in keywords if k.lower() in content]
                 if found_keywords:
                     result = f"У файлі {file_path} знайдено ключові слова: {', '.join(found_keywords)}"
+                    end_time = time.time()
+                    result += f" (Час виконання: {end_time - start_time:.2f} секунд)"
                     queue.put(result)
         except Exception as e:
             queue.put(f"Помилка при обробці файлу {file_path}: {e}")    
@@ -40,7 +45,7 @@ def search_files_in_directory(directory, keywords, queue):
         start_index = i * chunk_size
         end_index = min(start_index + chunk_size, len(files_to_process))
         process_files = files_to_process[start_index:end_index]
-        
+                
         process = Process(target=search_in_file, args=(process_files, keywords, queue))
         processes.append(process)
         process.start()
