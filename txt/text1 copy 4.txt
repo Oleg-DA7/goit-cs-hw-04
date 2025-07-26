@@ -1,0 +1,11 @@
+multiprocessing is a package that supports spawning processes using an API similar to the threading module.
+The multiprocessing package offers both local and remote concurrency, effectively side-stepping the 
+Global Interpreter Lock by using subprocesses instead of threads. Due to this, the multiprocessing
+ module allows the programmer to fully leverage multiple processors on a given machine. 
+ It runs on both Unix and Windows.
+
+Модуль multiprocessing також представляє API, які не мають аналогів у модулі threading. 
+Яскравим прикладом цього є об’єкт Pool, який пропонує зручний засіб розпаралелювання виконання 
+функції для кількох вхідних значень, розподіляючи вхідні дані між процесами (паралелізм даних).
+ Наступний приклад демонструє звичайну практику визначення таких функцій у модулі, щоб дочірні 
+ процеси могли успішно імпортувати цей модуль. Цей базовий приклад паралелізму даних з використанням Pool ...
